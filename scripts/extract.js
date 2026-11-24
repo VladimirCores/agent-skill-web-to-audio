@@ -114,7 +114,7 @@ async (el, cfg) => {
   }
 
   const collected = [];
-  const nodes = doc.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,blockquote,pre,table,figcaption,[data-block]');
+  const nodes = doc.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,blockquote,pre,table,figcaption,[data-block],div.t-text,div.t-title');
   for (const el of nodes) {
     if (collected.some(a => a !== el && a.contains(el))) continue;
     collected.push(el);
@@ -124,6 +124,8 @@ async (el, cfg) => {
 
     if (/^H[1-6]$/.test(tag)) {
       push({type: 'h', level: Number(tag[1]) || 2, text});
+    } else if (tag === 'DIV' && el.classList.contains('t-title')) {
+      push({type: 'h', level: 3, text});
     } else if (tag === 'LI') {
       const parent = el.parentElement;
       push({type: 'li', text, ordered: !!(parent && parent.tagName === 'OL')});
