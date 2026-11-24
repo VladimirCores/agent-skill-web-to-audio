@@ -16,7 +16,7 @@ Read this when extraction returns `saved: false`, `Failed to fetch`, empty block
 - Candidate roots, in order: `article`, `main`, `[role="main"]`, `[itemprop="articleBody"]`, `.post-content`, `.article-content`, `.entry-content`, `.markdown-body`, `.prose`, `#content`, `.content`, `div.FgTq3`, `body`. Scored by text length, paragraph/heading counts, and link density; `body` is penalized.
 - Title source: `titleSelector` → active LMS sidebar link → `og:title`/`twitter:title` → first `h1` → `document.title`.
 - On a clone, removes scripts, nav, headers, footers, forms, buttons, hidden/aria-hidden nodes, cookie banners, ads, social/share, sidebars, related, comments, modals, popups, newsletters, breadcrumbs, and pagination.
-- Collects headings, paragraphs, list items (with ordered/unordered metadata), quotes, code, tables, figcaptions, and `<img>` sources; deduplicates text and image URLs.
+- Collects headings, paragraphs, list items (with ordered/unordered metadata), quotes, code, tables, figcaptions, and `<img>` sources; deduplicates text and image URLs. Tilda builders that use `div.t-text` / `div.t-title` instead of `<p>` / `<h*>` are covered too.
 - If the result is a nav menu, cookie wall, or a wrapper of several articles, re-run with an explicit `contentSelector` (or `exclude`) found by inspecting the DOM, e.g.:
 
 ```js
@@ -25,6 +25,12 @@ const r = await tools.browse.eval({
   tab
 });
 ```
+
+## Tilda pages (`systems.education` and similar)
+
+- Content lives in `#allrecords`; site chrome, headers, sticky buttons and footer are sibling `#rec...` sections.
+- Inspect the DOM, keep the article's `#rec...` ids, and pass the rest as one comma-separated `exclude` string plus `.t-footer, noindex`. Use `titleSelector:"h1"` when `og:title` is generic.
+- Nested `div.t-text` blocks can concatenate headings and paragraphs without a separator; add a few literal `fixes.json` replacements before building the narration script.
 
 ## CSP-blocked loopback POST (X/Twitter and similar)
 
