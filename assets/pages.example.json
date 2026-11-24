@@ -1,0 +1,14 @@
+{
+  "title": "Web Collection",
+  "subtitle": "Saved pages",
+  "language": "en",
+  "voice": "en-US-GuyNeural",
+  "pages": [
+    {
+      "key": "example-article",
+      "url": "https://example.com/article",
+      "title": "Example Article",
+      "blocks_file": "page-example-article-blocks.json"
+    }
+  ]
+}
